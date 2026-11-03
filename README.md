@@ -1,62 +1,33 @@
-<div align="center">
+# SPYBOY
 
-# 🕵️ SPYBOY
+A SPY options trading bot using the Alpaca API. It runs a handful of intraday strategies, buys near-the-money calls or puts on signals, and manages exits itself. I wrote it as a learning project; run it on a paper account first.
 
-**A multi-strategy SPY options trading bot built on Alpaca.**
+## Strategies
 
-![Python](https://img.shields.io/badge/python-3.9+-3776ab?style=flat-square&logo=python&logoColor=white)
-![Alpaca](https://img.shields.io/badge/broker-Alpaca-ffce00?style=flat-square)
-![Oracle Cloud](https://img.shields.io/badge/deploy-Oracle%20Cloud%20Free-f80000?style=flat-square&logo=oracle&logoColor=white)
+- RSI-2 mean reversion
+- VWAP standard-deviation band reversion
+- TTM Squeeze breakout
+- Opening range breakout (adjusted by VIX)
+- Gap fade
 
-</div>
+## Risk handling
 
----
+ATR-based stops, quarter-Kelly position sizing, a 3% daily loss cutoff, time-of-day filters, and a higher-timeframe trend check. Options are 2-5 DTE for intraday and 5-14 DTE for swing trades, entered with limit orders at mid. Open positions are closed at stop, target, or end of day.
 
-> ⚠️ **Educational project. Not financial advice.** Run it on a paper-trading account first.
+## Running it
 
-## 🧠 Strategies
-
-| # | Strategy | Idea |
-|---|----------|------|
-| 1 | **RSI-2 mean reversion** | Fade extreme short-term oversold/overbought readings |
-| 2 | **VWAP σ-band reversion** | Enter when price stretches to a standard-deviation band around VWAP |
-| 3 | **TTM Squeeze** | Detect volatility compression and trade the breakout |
-| 4 | **Opening-range breakout** | VIX-adaptive range break after the open |
-| 5 | **Gap fade** | Small gap-downs tend to fill |
-
-## 🛡️ Risk management
-
-- ATR-based dynamic stops
-- Quarter-Kelly position sizing
-- 3% daily loss circuit breaker
-- Time-of-day filters
-- Multi-timeframe trend confirmation
-
-## 🧾 Options logic
-
-- Buys near-ATM **calls** on BUY signals and **puts** on SELL signals
-- 2–5 DTE for intraday, 5–14 DTE for swing
-- Limit orders at mid-price for better fills
-- Auto-closes at stop, target, or end of day
-
-## 🚀 Quick start
-
-```bash
+```
 pip install -r requirements.txt
-export ALPACA_API_KEY="your_alpaca_key"
-export ALPACA_API_SECRET="your_alpaca_secret"
+export ALPACA_API_KEY=...
+export ALPACA_API_SECRET=...
 python spyboy.py
 ```
 
-## 📁 Layout
+## Files
 
-| File | Purpose |
-|------|---------|
-| `spyboy.py` | The v2 bot |
-| `spyboy-v0.py` | Original RSI / MA / VWAP equity bot |
-| `spyboy.html` | Dashboard UI |
-| `oracle-setup.sh` | One-shot provisioning for an Oracle Cloud Always Free instance |
+- `spyboy.py` current version
+- `spyboy-v0.py` first version (RSI / MA / VWAP on shares)
+- `spyboy.html` dashboard
+- `oracle-setup.sh` sets up an Oracle Cloud free-tier VM to run the bot
 
----
-
-<div align="center"><sub>Made by <a href="https://github.com/emmanuelhuff7">@emmanuelhuff7</a></sub></div>
+Not financial advice.
